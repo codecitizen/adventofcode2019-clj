@@ -1,12 +1,13 @@
 (ns password-cracker)
 
-(defn comb [digit value base]
-  (if (= base 1)
-    (->> (range digit 10)
-         (map #(+ value %)))
-    (-> (for [next (range digit 10)]
-          (comb next (+ value (* base next)) (/ base 10)))
-        flatten)))
+(defn comb
+  ([digit base] (comb digit 0 base))
+  ([digit value base] (if (= base 1)
+                        (->> (range digit 10)
+                             (map #(+ value %)))
+                        (-> (for [next (range digit 10)]
+                              (comb next (+ value (* base next)) (/ base 10)))
+                            flatten))))
 
 ;; Solution to Problem #1
 (defn count-pw-combs []
